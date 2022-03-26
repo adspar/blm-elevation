@@ -2,9 +2,9 @@ library("psych")
 
 # 6 make scores & and add to df ----
 
-# need to define max and min values for reversed variables...
+# we need to define max and min values for reversed variables, but
 # i can't figure out how to do scales with different ranges
-# all in one scoring, so we do 5 scorings, one for each unique range
+# all in one scoring. so we do 5 scorings, one for each unique range.
 
 get_scale_range <- function(x){
   df %>%

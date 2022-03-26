@@ -1,8 +1,7 @@
 ---
-title: 'Data Cleaning - Emotions of Coalitional Conflict: Elevation and Anger in response
-  to Black Lives Matter protests'
-author: "DJ & AMS"
-date: "11/4/2021"
+title: 'Data cleaning guide for - The Coalitional Contours of Moral Elevation: Evidence from the U.S. Black Lives Matter Protest and Counter-protest Movements'
+author: "Holbrook et al"
+date: "26 March 2022"
 output:
   pdf_document: default
   word_document: default
@@ -14,19 +13,19 @@ This document describes our preparation of data. This is intended to facilitate 
 
 # Study Labels
 
-The chronological labels for each study in our data repository do not correspond to the labels used in our main text reporting.
+We conducted three studies, originally labeling them chronologically, under the project name "BLM-protest". Reporting for this specific manuscript relabeled these studies under the project name "BLM-elevation".
 
-| Repository Label for Study | Manuscript Name of Study |
-|----------------------------|--------------------------|
-| Study 1                    | Pilot                    |
-| Study 2                    | Study 1                  |
-| Study 3                    | Study 2                  |
+| Chronologocial Label for Study | Manuscript Name of Study |
+|--------------------------------|--------------------------|
+| Study 1                        | Pilot                    |
+| Study 2                        | Study 1                  |
+| Study 3                        | Study 2                  |
 
 # Data Preparation Scripts
 
 ## General workflow
 
-Each study has a high level "\_prepare-data.R" script that runs several subscripts for each study, then recodes several variables, generating useful objects for reporting purposes.
+Each study has a high level "\_prepare-data.R" script that runs several subscripts for each study, then recodes several variables, generating cleaned data sets and other useful R objects for reporting purposes.
 
 ## Subscripts
 

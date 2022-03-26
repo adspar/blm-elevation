@@ -1,4 +1,6 @@
 # Prepare each study and rename for manuscript ----
+## note that we're renaming projects for the manuscript,
+## changing from the original chronological naming
 source("BLM-protest_study1_prepare-data.R")
 pilot <- study1; rm(study1,  prep_study1)
 
@@ -13,7 +15,6 @@ study2 <- study3; rm(study3, prep_study3)
 pilot$df$condition <- "BLM"
 
 # Recode political affiliation into two factors ----
-
 ## Pilot ----
 pilot$df <- pilot$df %>%
   

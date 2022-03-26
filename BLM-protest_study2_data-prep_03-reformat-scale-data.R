@@ -21,8 +21,6 @@ df <- df %>%
   ))
 
 # There's a second batch where the scale just skipped 5 for some reason.
-####   needs confirmation from qualtrics file  ########
-
 recode_qualtrics_weirds2 <- function(x) {
   recode(x, `6` = 5)
 }
