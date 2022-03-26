@@ -1,0 +1,73 @@
+---
+title: 'Data Cleaning - Emotions of Coalitional Conflict: Elevation and Anger in response
+  to Black Lives Matter protests'
+author: "DJ & AMS"
+date: "11/4/2021"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+# Overview
+
+This document describes our preparation of data. This is intended to facilitate scrutiny and replication of our work.
+
+# Study Labels
+
+The chronological labels for each study in our data repository do not correspond to the labels used in our main text reporting.
+
+| Repository Label for Study | Manuscript Name of Study |
+|----------------------------|--------------------------|
+| Study 1                    | Pilot                    |
+| Study 2                    | Study 1                  |
+| Study 3                    | Study 2                  |
+
+# Data Preparation Scripts
+
+## General workflow
+
+Each study has a high level "\_prepare-data.R" script that runs several subscripts for each study, then recodes several variables, generating useful objects for reporting purposes.
+
+## Subscripts
+
+The subscripts for each study generally serve similar functions as follows:
+
+**"\_data-prep_00-make-raw-data-file.R"**
+
+These remove identifying and irrelevant information from the source data files. The resulting files are the public raw data for each study.
+
+**"\_data-prep_01-participant-filters.R"**
+
+These filter out participants based on various exclusion criteria.
+
+**"\_data-prep_02-define-scales.R"**
+
+These scripts define the items of each scale used in the study.
+
+**"\_data-prep_03-reformat-scale-data.R"**
+
+These script corrects some coding errors that affected the output format of some scale items, e.g., Likert value chosen by participant accidentally mapped to a different (and unique) number as a reporting value.
+
+**"\_data-prep_04-compute-scales.R"**
+
+These calculate scale scores and psychometrics.
+
+## Output
+
+The result is a list of useful objects for reporting:
+
+**df** polished dataframe suitable for analysis and visualization
+
+**raw_df** dataframe corresponding to the raw data file
+
+**scale_key** lists of scale items
+
+**scores** psychometric information about each scale
+
+# Data Notes
+
+Pre-registration, a PDF copy of the Qualtrics survey, raw data, and data processing scripts are available on $$insert OSF link$$.
+
+The variable names in the shared raw data file can be directly linked to corresponding survey items using the **"BLM-protest_studyN_variables.csv"** files, where studyN corresponds to the repository name for each study (see above: Study Labels). In those files, the "new name" column corresponds to the names in the raw data files, and the other two columns provide information about the Qualtrics variable name and full text of the corresponding survey item.
+
+In our data wrangling process (see above: Data Preparation Scripts: General Workflow), we converted all variable names to snakecase, e.g., Idealism_Community_Dishonest_R --\> idealism_community_dishonest_r
