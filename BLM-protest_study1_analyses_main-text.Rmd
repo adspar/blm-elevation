@@ -614,27 +614,6 @@ study2$df %>%
 
 ```
 
-```{r}
-# controlling for elevation, ignore for now
-#aov_1 <- aov(police_funding ~ condition + elevation, data = study1$df)
-#summary(aov_1)
-
-
-
-#aov_2 <- aov(police_funding ~ condition + elevation, data = study2$df %>% filter(condition != "BtB"))
-#summary(aov_2)
-#tukey_aov_2 <- TukeyHSD(aov_2)
-#tukey_aov_2
-
-# mediation analysis
-
-
-#fit.mediator = lm(elevation ~ condition, data = study2$df %>% filter(condition != "BtB"))
-#fit.dv = lm(police_funding ~ condition + elevation, data = study2$df %>% filter(condition != "BtB"))
-#results = mediation::mediate(fit.mediator, fit.dv, treat = 'condition', mediator = 'elevation', boot = T)
-#summary(results)
-
-```
 
 ### number of participants
 
