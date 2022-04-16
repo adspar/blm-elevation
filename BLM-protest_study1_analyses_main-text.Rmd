@@ -1,0 +1,981 @@
+---
+title: "Main Text Analyses"
+author: "Reg"
+date: "4/14/2022"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
+
+# data prep 
+source("BLM-elevation_data-prep.R")
+
+# palettes that work for our color-blind friends
+source("BLM-elevation_palettes.R")
+
+# useful plot function(s)
+source("BLM-elevation_useful-plots.R")
+
+# reporting packages
+library(htmlTable)
+library(interactions)
+library(psych)
+library(report)
+library(tidyverse)
+library(sjPlot)
+library(kableExtra)
+library(knitr)
+library(yarrr)
+library(emmeans)
+library(dplyr)
+library(Hmisc)
+library(mediation)
+
+```
+
+
+### Correlation between conservatism and police funding
+
+```{r}
+pear_1 <- cor.test(formula = ~ police_funding + conservativism_overall, data = pilot$df, method = "pearson", exact = F)
+pear_2 <- cor.test(formula = ~ police_funding + conservativism_overall, data = study1$df, method = "pearson", exact = F)
+pear_3 <- cor.test(formula = ~ police_funding + conservativism_overall, data = study2$df, method = "pearson", exact = F)
+
+list_of_study <-
+  list(
+    "pilot",
+    "study 1",
+    "study 2"
+  )
+
+list_of_pearson <-
+  list(
+    pear_1$estimate,
+    pear_2$estimate,
+    pear_3$estimate
+  )
+
+list_of_pearson_p <-
+  list(
+    pear_1$p.value,
+    pear_2$p.value,
+    pear_3$p.value
+  )
+
+pearson_parameters <- tibble(
+  study = list_of_study,
+  correlation_coefficient = list_of_pearson,
+  p_value = list_of_pearson_p
+)
+
+pearson_parameters %>%
+  kable(caption = "pearson correlation: conservatism and police funding") %>%
+  kable_styling()
+
+
+```
+
+### Correlation between conservatism and police idealism
+
+```{r}
+pear_1 <- cor.test(formula = ~ idealism_police + conservativism_overall, data = pilot$df, method = "pearson", exact = F)
+pear_2 <- cor.test(formula = ~ idealism_police + conservativism_overall, data = study1$df, method = "pearson", exact = F)
+pear_3 <- cor.test(formula = ~ idealism_police + conservativism_overall, data = study2$df, method = "pearson", exact = F)
+
+list_of_study <-
+  list(
+    "pilot",
+    "study 1",
+    "study 2"
+  )
+
+list_of_pearson <-
+  list(
+    pear_1$estimate,
+    pear_2$estimate,
+    pear_3$estimate
+  )
+
+list_of_pearson_p <-
+  list(
+    pear_1$p.value,
+    pear_2$p.value,
+    pear_3$p.value
+  )
+
+pearson_parameters <- tibble(
+  study = list_of_study,
+  correlation_coefficient = list_of_pearson,
+  p_value = list_of_pearson_p
+)
+
+pearson_parameters %>%
+  kable(caption = "pearson correlation: conservatism and police idealism") %>%
+  kable_styling()
+```
+
+### Correlation between conservatism and BLM idealism
+
+```{r}
+
+pear_1 <- cor.test(formula = ~ idealism_blm + conservativism_overall, data = study2$df, method = "pearson", exact = F)
+
+
+list_of_study <-
+  list(
+    "study 2"
+  )
+
+list_of_pearson <-
+  list(
+    pear_1$estimate
+  )
+
+list_of_pearson_p <-
+  list(
+    pear_1$p.value
+  )
+
+pearson_parameters <- tibble(
+  study = list_of_study,
+  correlation_coefficient = list_of_pearson,
+  p_value = list_of_pearson_p
+)
+
+pearson_parameters %>%
+  kable(caption = "pearson correlation: conservatism and BLM idealism") %>%
+  kable_styling()
+```
+
+### Interaction between political orientation and video condition on elevation
+
+```{r}
+fit_1 <- lm(elevation ~ conservativism_overall * condition, data = study1$df)
+fit_2 <- lm(elevation ~ conservativism_overall * condition, data = study2$df)
+
+interaction_1 <- probe_interaction(fit_1,
+           pred = conservativism_overall,
+           modx = condition,
+           digits = 3)
+
+
+interaction_2 <- probe_interaction(fit_2,
+           pred = conservativism_overall,
+           modx = condition,
+           digits = 3)
+
+
+format(interaction_1$simslopes$slopes, digits = 3) %>%
+  kbl(caption = "simple slopes for study 1") %>%
+  kable_styling()
+
+interaction_contrasts_1 <- emtrends(fit_1, pairwise ~ condition, var = "conservativism_overall", )
+
+kbl(interaction_contrasts_1$contrasts, digits = c(2, 2, 2, 2, 2, 20), caption = "estimate for interaction term in study 1") %>%
+  kable_styling()
+
+format(interaction_2$simslopes$slopes, digits = 3) %>%
+  kbl(caption = "simple slopes for study 2") %>%
+  kable_styling()
+
+interaction_contrasts_2 <- emtrends(fit_2, pairwise ~ condition, var = "conservativism_overall", )
+
+kbl(interaction_contrasts_2$contrasts, digits = c(2, 2, 2, 2, 2, 20), caption = "estimate for interaction terms in study 2") %>%
+  kable_styling()
+
+```
+### Interaction between political orientation and video condition on funding preferences
+
+
+
+```{r}
+fit_1 <- lm(police_funding ~ conservativism_overall * condition, data = study1$df)
+fit_2 <- lm(police_funding ~ conservativism_overall * condition, data = study2$df)
+
+interaction_1 <- probe_interaction(fit_1,
+           pred = conservativism_overall,
+           modx = condition,
+           digits = 3)
+
+
+interaction_2 <- probe_interaction(fit_2,
+           pred = conservativism_overall,
+           modx = condition,
+           digits = 3)
+
+
+format(interaction_1$simslopes$slopes, digits = 3) %>%
+  kbl(caption = "simple slopes for study 1") %>%
+  kable_styling()
+
+interaction_contrasts_1 <- emtrends(fit_1, pairwise ~ condition, var = "conservativism_overall", )
+
+kbl(interaction_contrasts_1$contrasts, digits = c(2, 2, 2, 2, 2, 20), caption = "estimate for interaction term in study 1") %>%
+  kable_styling()
+
+format(interaction_2$simslopes$slopes, digits = 3) %>%
+  kbl(caption = "simple slopes for study 2") %>%
+  kable_styling()
+
+interaction_contrasts_2 <- emtrends(fit_2, pairwise ~ condition, var = "conservativism_overall", )
+
+kbl(interaction_contrasts_2$contrasts, digits = c(2, 2, 2, 2, 2, 20), caption = "estimate for interaction terms in study 2") %>%
+  kable_styling()
+
+```
+
+
+
+### Interaction between elevation and video condition on funding preferences
+
+
+
+```{r}
+fit_1 <- lm(police_funding ~ elevation * condition, data = study1$df)
+fit_2 <- lm(police_funding ~ elevation * condition, data = study2$df)
+
+interaction_1 <- probe_interaction(fit_1,
+           pred = elevation,
+           modx = condition,
+           digits = 3)
+
+
+interaction_2 <- probe_interaction(fit_2,
+           pred = elevation,
+           modx = condition,
+           digits = 3)
+
+
+format(interaction_1$simslopes$slopes, digits = 3) %>%
+  kbl(caption = "simple slopes for study 1") %>%
+  kable_styling()
+
+interaction_contrasts_1 <- emtrends(fit_1, pairwise ~ condition, var = "elevation", )
+
+kbl(interaction_contrasts_1$contrasts, digits = c(3, 3, 3, 3, 3, 20), caption = "estimate for interaction term in study 1") %>%
+  kable_styling()
+
+format(interaction_2$simslopes$slopes, digits = 3) %>%
+  kbl(caption = "simple slopes for study 2") %>%
+  kable_styling()
+
+interaction_contrasts_2 <- emtrends(fit_2, pairwise ~ condition, var = "elevation", )
+
+kbl(interaction_contrasts_2$contrasts, digits = c(3, 3, 3, 3, 3, 20), caption = "estimate for interaction terms in study 2") %>%
+  kable_styling()
+
+```
+
+
+
+
+### Spearman and Pearson correlations betweeen conservatism and elevation by condition
+
+```{r}
+rho_1 <- cor.test(formula = ~ elevation + conservativism_overall, data = pilot$df %>% filter(condition == "BLM"), method = "spearman", exact = F)
+rho_2 <- cor.test(formula = ~ elevation + conservativism_overall, data = study1$df %>% filter(condition == "control"), method = "spearman", exact = F)
+rho_3 <- cor.test(formula = ~ elevation + conservativism_overall, data = study1$df %>% filter(condition == "BLM"), method = "spearman", exact = F)
+rho_4 <- cor.test(formula = ~ elevation + conservativism_overall, data = study2$df %>% filter(condition == "control"), method = "spearman", exact = F)
+rho_5 <- cor.test(formula = ~ elevation + conservativism_overall, data = study2$df %>% filter(condition == "BLM"), method = "spearman", exact = F)
+rho_6 <- cor.test(formula = ~ elevation + conservativism_overall, data = study2$df %>% filter(condition == "BtB"), method = "spearman", exact = F)
+pear_1 <- cor.test(formula = ~ elevation + conservativism_overall, data = pilot$df %>% filter(condition == "BLM"), method = "pearson", exact = F)
+pear_2 <- cor.test(formula = ~ elevation + conservativism_overall, data = study1$df %>% filter(condition == "control"), method = "pearson", exact = F)
+pear_3 <- cor.test(formula = ~ elevation + conservativism_overall, data = study1$df %>% filter(condition == "BLM"), method = "pearson", exact = F)
+pear_4 <- cor.test(formula = ~ elevation + conservativism_overall, data = study2$df %>% filter(condition == "control"), method = "pearson", exact = F)
+pear_5 <- cor.test(formula = ~ elevation + conservativism_overall, data = study2$df %>% filter(condition == "BLM"), method = "pearson", exact = F)
+pear_6 <- cor.test(formula = ~ elevation + conservativism_overall, data = study2$df %>% filter(condition == "BtB"), method = "pearson", exact = F)
+
+
+list_of_study <-
+  list(
+    "pilot",
+    "study 1",
+    "study 1",
+    "study 2",
+    "study 2",
+    "study 2"
+  )
+
+
+list_of_condition <-
+  list(
+    "BLM",
+    "control",
+    "BLM",
+    "control",
+    "BLM",
+    "BtB"
+  )
+
+list_of_rho <-
+  list(
+    rho_1$estimate,
+    rho_2$estimate,
+    rho_3$estimate,
+    rho_4$estimate,
+    rho_5$estimate,
+    rho_6$estimate
+  )
+
+list_of_rho_p <-
+  list(
+    rho_1$p.value,
+    rho_2$p.value,
+    rho_3$p.value,
+    rho_4$p.value,
+    rho_5$p.value,
+    rho_6$p.value
+  )
+
+rho_parameters <- tibble(
+  study = list_of_study,
+  condition = list_of_condition,
+  rho = list_of_rho,
+  p_value = list_of_rho_p
+)
+
+rho_parameters %>%
+  kable(caption = "spearman correlations between conservatism and elevation") %>%
+  kable_styling()
+
+list_of_pearson <-
+  list(
+    pear_1$estimate,
+    pear_2$estimate,
+    pear_3$estimate,
+    pear_4$estimate,
+    pear_5$estimate,
+    pear_6$estimate
+  )
+
+list_of_pearson_p <-
+  list(
+    pear_1$p.value,
+    pear_2$p.value,
+    pear_3$p.value,
+    pear_4$p.value,
+    pear_5$p.value,
+    pear_6$p.value
+  )
+
+pearson_parameters <- tibble(
+  study = list_of_study,
+  condition = list_of_condition,
+  correlation_coefficient = list_of_pearson,
+  p_value = list_of_pearson_p
+)
+
+pearson_parameters %>%
+  kable(caption = "pearson correlations between conservatism and elevation") %>%
+  kable_styling()
+
+```
+
+### Spearman and Pearson correlations betweeen funding and elevation by condition
+
+```{r}
+rho_1 <- cor.test(formula = ~ elevation + police_funding, data = pilot$df %>% filter(condition == "BLM"), method = "spearman", exact = F)
+rho_2 <- cor.test(formula = ~ elevation + police_funding, data = study1$df %>% filter(condition == "control"), method = "spearman", exact = F)
+rho_3 <- cor.test(formula = ~ elevation + police_funding, data = study1$df %>% filter(condition == "BLM"), method = "spearman", exact = F)
+rho_4 <- cor.test(formula = ~ elevation + police_funding, data = study2$df %>% filter(condition == "control"), method = "spearman", exact = F)
+rho_5 <- cor.test(formula = ~ elevation + police_funding, data = study2$df %>% filter(condition == "BLM"), method = "spearman", exact = F)
+rho_6 <- cor.test(formula = ~ elevation + police_funding, data = study2$df %>% filter(condition == "BtB"), method = "spearman", exact = F)
+pear_1 <- cor.test(formula = ~ elevation + police_funding, data = pilot$df %>% filter(condition == "BLM"), method = "pearson", exact = F)
+pear_2 <- cor.test(formula = ~ elevation + police_funding, data = study1$df %>% filter(condition == "control"), method = "pearson", exact = F)
+pear_3 <- cor.test(formula = ~ elevation + police_funding, data = study1$df %>% filter(condition == "BLM"), method = "pearson", exact = F)
+pear_4 <- cor.test(formula = ~ elevation + police_funding, data = study2$df %>% filter(condition == "control"), method = "pearson", exact = F)
+pear_5 <- cor.test(formula = ~ elevation + police_funding, data = study2$df %>% filter(condition == "BLM"), method = "pearson", exact = F)
+pear_6 <- cor.test(formula = ~ elevation + police_funding, data = study2$df %>% filter(condition == "BtB"), method = "pearson", exact = F)
+
+
+list_of_study <-
+  list(
+    "pilot",
+    "study 1",
+    "study 1",
+    "study 2",
+    "study 2",
+    "study 2"
+  )
+
+
+list_of_condition <-
+  list(
+    "BLM",
+    "control",
+    "BLM",
+    "control",
+    "BLM",
+    "BtB"
+  )
+
+list_of_rho <-
+  list(
+    rho_1$estimate,
+    rho_2$estimate,
+    rho_3$estimate,
+    rho_4$estimate,
+    rho_5$estimate,
+    rho_6$estimate
+  )
+
+list_of_rho_p <-
+  list(
+    rho_1$p.value,
+    rho_2$p.value,
+    rho_3$p.value,
+    rho_4$p.value,
+    rho_5$p.value,
+    rho_6$p.value
+  )
+
+rho_parameters <- tibble(
+  study = list_of_study,
+  condition = list_of_condition,
+  rho = list_of_rho,
+  p_value = list_of_rho_p
+)
+
+rho_parameters %>%
+  kable(caption = "spearman correlations between funding and elevation") %>%
+  kable_styling()
+
+list_of_pearson <-
+  list(
+    pear_1$estimate,
+    pear_2$estimate,
+    pear_3$estimate,
+    pear_4$estimate,
+    pear_5$estimate,
+    pear_6$estimate
+  )
+
+list_of_pearson_p <-
+  list(
+    pear_1$p.value,
+    pear_2$p.value,
+    pear_3$p.value,
+    pear_4$p.value,
+    pear_5$p.value,
+    pear_6$p.value
+  )
+
+pearson_parameters <- tibble(
+  study = list_of_study,
+  condition = list_of_condition,
+  correlation_coefficient = list_of_pearson,
+  p_value = list_of_pearson_p
+)
+
+pearson_parameters %>%
+  kable(caption = "pearson correlations between funding and elevation") %>%
+  kable_styling()
+
+```
+
+
+### main effect of condition on elevation
+
+Note that for the study 2 pairwise comparisons, p values are less than 2.62e-14--the package can't produce values any lower.
+
+```{r}
+
+pirateplot(formula = elevation ~ condition,
+           data = study1$df,
+           main = "elevation by condition study 1",
+           theme = 3,
+           xlab = "condition",
+           ylab = "elevation",
+           cex.names = .75,
+           cex.lab = .75,
+           pal = "espresso")
+
+aov_1 <- aov(elevation ~ condition, data = study1$df)
+summary(aov_1)
+tukey_aov_1 <- TukeyHSD(aov_1)
+tukey_aov_1
+
+study1$df %>% 
+  group_by(condition) %>%
+  summarise(
+    mean = mean(elevation, na.rm = T),
+    sd = sd(elevation, na.rm = T)
+    ) %>%
+  kable(caption = "descriptive stats study 1") %>%
+  kable_styling()
+
+
+
+pirateplot(formula = elevation ~ condition,
+           data = study2$df,
+           main = "elevation by condition study 2",
+           theme = 3,
+           xlab = "condition",
+           ylab = "elevation",
+           cex.names = .75,
+           cex.lab = .75,
+           pal = "espresso")
+
+aov_2 <- aov(elevation ~ condition, data = study2$df)
+summary(aov_2)
+tukey_aov_2 <- TukeyHSD(aov_2)
+tukey_aov_2
+
+study2$df %>% 
+  group_by(condition) %>%
+  summarise(
+    mean = mean(elevation, na.rm = T),
+    sd = sd(elevation, na.rm = T)
+    ) %>%
+  kable(caption = "descriptive stats study 2") %>%
+  kable_styling()
+```
+
+
+
+### main effect of condition on funding
+
+```{r}
+
+pirateplot(formula = police_funding ~ condition,
+           data = study1$df,
+           main = "police funding by condition study 1",
+           theme = 3,
+           xlab = "condition",
+           ylab = "police funding",
+           cex.names = .75,
+           cex.lab = .75,
+           pal = "espresso")
+
+aov_1 <- aov(police_funding ~ condition, data = study1$df)
+summary(aov_1)
+tukey_aov_1 <- TukeyHSD(aov_1)
+tukey_aov_1
+
+study1$df <- study1$df %>%
+  mutate(elevation = as.numeric(elevation)) %>%
+  mutate(police_funding = as.numeric(police_funding)) %>%
+  mutate(condition = factor(condition, ordered = F))
+
+study1$df$condition <- relevel(study1$df$condition, ref = "control")
+
+med_1 <- lm(police_funding ~ condition, data = study1$df)
+med_2 <- lm(elevation ~ condition, data = study1$df)
+med_3 <- lm(police_funding ~ elevation + condition, data = study1$df)
+med_results <- mediation::mediate(med_2, med_3, treat = "condition", mediator = "elevation")
+summary(med_results)
+
+study1$df %>% 
+  group_by(condition) %>%
+  summarise(
+    mean = mean(police_funding, na.rm = T),
+    sd = sd(police_funding, na.rm = T)
+    ) %>%
+  kable(caption = "descriptive stats study 1") %>%
+  kable_styling()
+
+study2$df <- study2$df %>%
+  mutate(elevation = as.numeric(elevation)) %>%
+  mutate(police_funding = as.numeric(police_funding)) %>%
+  mutate(condition = factor(condition, ordered = F))
+
+study2$df$condition <- relevel(study2$df$condition, ref = "control")
+
+med_1 <- lm(police_funding ~ condition, data = study2$df %>% filter(condition != "BtB"))
+med_2 <- lm(elevation ~ condition, data = study2$df %>% filter(condition != "BtB"))
+med_3 <- lm(police_funding ~ elevation + condition, data = study2$df %>% filter(condition != "BtB"))
+med_results <- mediation::mediate(med_2, med_3, treat = "condition", mediator = "elevation")
+summary(med_results)
+
+
+pirateplot(formula = police_funding ~ condition,
+           data = study2$df,
+           main = "police funding by condition study 2",
+           theme = 3,
+           xlab = "condition",
+           ylab = "police funding",
+           cex.names = .75,
+           cex.lab = .75,
+           pal = "espresso")
+
+aov_2 <- aov(police_funding ~ condition, data = study2$df)
+summary(aov_2)
+tukey_aov_2 <- TukeyHSD(aov_2)
+tukey_aov_2
+
+study2$df %>% 
+  group_by(condition) %>%
+  summarise(
+    mean = mean(police_funding, na.rm = T),
+    sd = sd(police_funding, na.rm = T)
+    ) %>%
+  kable(caption = "descriptive stats study 2") %>%
+  kable_styling()
+
+```
+
+```{r}
+# controlling for elevation, ignore for now
+#aov_1 <- aov(police_funding ~ condition + elevation, data = study1$df)
+#summary(aov_1)
+
+
+
+#aov_2 <- aov(police_funding ~ condition + elevation, data = study2$df %>% filter(condition != "BtB"))
+#summary(aov_2)
+#tukey_aov_2 <- TukeyHSD(aov_2)
+#tukey_aov_2
+
+# mediation analysis
+
+
+#fit.mediator = lm(elevation ~ condition, data = study2$df %>% filter(condition != "BtB"))
+#fit.dv = lm(police_funding ~ condition + elevation, data = study2$df %>% filter(condition != "BtB"))
+#results = mediation::mediate(fit.mediator, fit.dv, treat = 'condition', mediator = 'elevation', boot = T)
+#summary(results)
+
+```
+
+### number of participants
+
+##### Pilot study
+
+```{r}
+
+count(pilot$df)
+
+```
+
+##### Study 1
+
+```{r}
+
+count(study1$df)
+
+```
+
+##### Study 2
+
+```{r}
+
+count(study2$df)
+
+```
+
+### Scale reliabilities
+
+#### Study 1
+
+##### Police idealism
+
+```{r}
+
+study1$scores$idealism$alpha[3]
+
+```
+
+##### Elevation overall
+
+```{r}
+
+study1$scores$emotion$alpha[2]
+
+```
+
+##### Elevation - emotion terms
+
+```{r}
+
+study1$scores$emotion$alpha[5]
+
+```
+
+##### Elevation - somatic symptoms
+
+```{r}
+
+study1$scores$emotion$alpha[3]
+
+```
+
+##### Elevation - behavioral tendencies
+
+```{r}
+
+study1$scores$emotion$alpha[4]
+
+```
+
+##### Conservatism
+
+```{r}
+
+study1$scores$conservatism$alpha[4]
+
+```
+
+#### Study 2
+
+##### Police idealism
+
+```{r}
+
+study2$scores$idealism$alpha[2]
+
+```
+
+##### BLM idealism
+
+```{r}
+
+study2$scores$idealism$alpha[3]
+
+```
+
+##### Elevation overall
+
+```{r}
+
+study2$scores$emotion$alpha[2]
+
+```
+
+##### Elevation - emotion terms
+
+```{r}
+
+study2$scores$emotion$alpha[5]
+
+```
+
+##### Elevation - somatic symptoms
+
+```{r}
+
+study2$scores$emotion$alpha[3]
+
+```
+
+##### Elevation - behavioral tendencies
+
+```{r}
+
+study2$scores$emotion$alpha[4]
+
+```
+
+##### Conservatism
+
+```{r}
+
+study2$scores$conservatism$alpha[4]
+
+```
+
+### Demographics and summary statistics
+
+#### Study 2
+
+```{r}
+
+
+# gender
+group_by(study2$df %>% filter(!is.na(gender_two_factor)), gender_two_factor) %>%
+  summarise(proportion = n() / nrow(.)) %>%
+  kable(caption = "gender study 2") %>%
+  kable_styling()
+
+# ethnicity
+
+study2$df <- study2$df %>%
+  mutate(
+    # create binary ethnicity factor
+    ethnicity_ternary = dplyr::recode_factor(
+      ethnicity_factor,
+      "7" = "White",
+      "3" = "Black",
+      "13" = "Black",
+      "23" = "Black",
+      "30" = "Black",
+      "34" = "Black",
+      "37" = "Black",
+      "137" = "Black",
+      "347" = "Black",
+      "378" = "Black",
+      "1234567" = "Black",
+      .default = "other non-White",
+      .missing = NULL
+    )
+  )
+
+group_by(study2$df %>% filter(!is.na(ethnicity_ternary)), ethnicity_ternary) %>%
+  summarise(proportion = n() / nrow(.)) %>%
+  kable(caption = "ethnicity study 2") %>%
+  kable_styling()
+
+# age
+summarise(
+  study2$df %>% filter(!is.na(age)),
+  mean(age, na.rm = TRUE),
+  sd(age, na.rm = TRUE)
+) %>%
+  kable(caption = "age study 2") %>%
+  kable_styling()
+
+# political party
+group_by(study2$df %>% filter(!is.na(major_parties)), major_parties) %>%
+  summarise(proportion = n() / nrow(.)) %>%
+  kable(caption = "political party study 2") %>%
+  kable_styling()
+
+# conservatism
+
+summarise(
+  study2$df %>% filter(!is.na(conservativism_overall)),
+  mean(conservativism_overall, na.rm = TRUE),
+  sd(conservativism_overall, na.rm = TRUE),
+) %>%
+  kable(caption = "conservatism study 2") %>%
+  kable_styling()
+
+# idealisms
+
+summarise(
+  study2$df %>% filter(!is.na(idealism_blm)),
+  mean(idealism_blm, na.rm = TRUE),
+  sd(idealism_blm, na.rm = TRUE)
+) %>%
+  kable(caption = "idealism_blm study 2") %>%
+  kable_styling()
+
+summarise(
+  study2$df %>% filter(!is.na(idealism_police)),
+  mean(idealism_police, na.rm = TRUE),
+  sd(idealism_police, na.rm = TRUE)
+) %>%
+  kable(caption = "idealism_police study 2") %>%
+  kable_styling()
+
+summarise(
+  study2$df %>% filter(!is.na(idealism_community)),
+  mean(idealism_community, na.rm = TRUE),
+  sd(idealism_community, na.rm = TRUE)
+) %>%
+  kable(caption = "idealism_community study 2") %>%
+  kable_styling()
+
+summarise(
+  study2$df %>% filter(!is.na(idealism_btb)),
+  mean(idealism_btb, na.rm = TRUE),
+  sd(idealism_btb, na.rm = TRUE)
+) %>%
+  kable(caption = "idealism_btb study 2") %>%
+  kable_styling()
+
+
+
+```
+### SOM: pearson and spearman correlations
+
+#### Study 1
+
+##### control condition
+
+###### pearson correlations
+
+```{r}
+correlation_frame <- study1$df %>% filter(condition == "control") %>%
+  dplyr::select(conservativism_overall, idealism_police, police_funding, elevation)
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "pearson")
+
+```
+
+###### spearman correlations
+
+```{r}
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "spearman")
+
+```
+
+##### BLM condition
+
+###### pearson correlations
+
+```{r}
+correlation_frame <- study1$df %>% filter(condition == "BLM") %>%
+  dplyr::select(conservativism_overall, idealism_police, police_funding, elevation)
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "pearson")
+
+```
+
+###### spearman correlations
+
+```{r}
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "spearman")
+
+```
+
+
+#### Study 2
+
+##### control condition
+
+###### pearson correlations
+
+```{r}
+correlation_frame <- study2$df %>% filter(condition == "control") %>%
+  dplyr::select(conservativism_overall, idealism_police, police_funding, elevation, idealism_blm)
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "pearson")
+
+```
+
+###### spearman correlations
+
+```{r}
+Hmisc::rcorr(as.matrix(correlation_frame), type = "spearman")
+```
+
+##### BLM condition
+
+###### pearson correlations
+
+```{r}
+correlation_frame <- study2$df %>% filter(condition == "BLM") %>%
+  dplyr::select(conservativism_overall, idealism_police, police_funding, elevation, idealism_blm)
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "pearson")
+
+```
+
+###### spearman correlations
+
+```{r}
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "spearman")
+
+```
+
+##### BtB condition
+
+###### pearson correlations
+
+```{r}
+correlation_frame <- study2$df %>% filter(condition == "BtB") %>%
+  dplyr::select(conservativism_overall, idealism_police, police_funding, elevation, idealism_blm)
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "pearson")
+
+```
+
+###### spearman correlations
+
+```{r}
+  
+Hmisc::rcorr(as.matrix(correlation_frame), type = "spearman")
+
+```
