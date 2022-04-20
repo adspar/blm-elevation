@@ -1,7 +1,7 @@
 ---
 title: "Figures for BLM-Elevation"
-author: "AMS"
-date: "Mar 26, 2022"
+author: "AMS, on behalf of Holbrook et al"
+date: "20 April, 2022"
 output: 
   pdf_document:
     keep_md: yes
@@ -29,8 +29,4 @@ These Figures are used in the Main Text and/or Supplement to Holbrook et al "The
 
 ![Supplement Figure S5. Like Main Text Figure 2, except using Idealism towards BLM instead of Conservatism. Note: study 2 data only](BLM-elevation_Figures_files/figure-latex/unnamed-chunk-8-1.pdf) 
 
-![Supplement Fig S6 top panel for study 1](BLM-elevation_Figures_files/figure-latex/unnamed-chunk-9-1.pdf) 
-
-![Supplement Fig S6 bottom panel for study 2](BLM-elevation_Figures_files/figure-latex/unnamed-chunk-10-1.pdf) 
-
-![Supplement Figure S6. Police Funding by Condition.](BLM-elevation_Figures_files/figure-latex/unnamed-chunk-11-1.pdf) 
+![Supplement Figure S6. Police Funding by Condition.](BLM-elevation_Figures_files/figure-latex/unnamed-chunk-9-1.pdf) 
