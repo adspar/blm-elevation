@@ -32,43 +32,19 @@ source("BLM-elevation_palettes.R")
 # plot
 source("BLM-elevation_useful-plots.R")
 
-
-
 ```
 
 # Figures
 
-```{r fig.cap = "Main Text Figure 1, Top Panel. Elevation by Condition for Study 1."}
-pirateplot(
-  formula = elevation ~ condition,
-  data = study1$df,
-  pal = conditions_palette[c(1,3)], 
-  theme = 1,
-  gl.y = 0,
-  cex.lab = 1.5
-) 
+These Figures are used in the Main Text and/or Supplement to Holbrook et al "The Coalitional Contours of Moral Elevation: Evidence from the U.S. Black Lives Matter Protest and Counter-protest Movements."
 
-```
-
-```{r fig.cap = "Main Text Figure 1, Bottom Panel. Elevation by Condition for Study 2."}
-pirateplot(
-  formula = elevation ~ condition,
-  data = study2$df,
-  pal = conditions_palette, 
-  theme = 1,
-  gl.y = 0,
-  cex.lab = 1.5
-) 
-
-```
-
-```{r fig.cap = "A different option for Fig 1"}
+```{r fig.cap = "Main Text Figure 1. Elevation by Condition."}
 pirateplot(
   formula = elevation ~ condition + study,
   data = bind_rows(
     list(
-      study1 =    study1$df %>% select(elevation, condition),
-      study2 =    study2$df %>% select(elevation, condition)
+      `Study 1` =    study1$df %>% select(elevation, condition),
+      `Study 2` =    study2$df %>% select(elevation, condition)
     ),
     .id = "study"
   ),
@@ -119,6 +95,23 @@ pirateplot(
   cex.lab = 1.5
 ) 
 
+```
+
+```{r fig.cap = "Supplement Figure S6. Police Funding by Condition."}
+pirateplot(
+  formula = police_funding ~ condition + study,
+  data = bind_rows(
+    list(
+      `Study 1` =    study1$df %>% select(police_funding, condition),
+      `Study 2` =    study2$df %>% select(police_funding, condition)
+    ),
+    .id = "study"
+  ),
+  pal = conditions_palette, 
+  theme = 1,
+  gl.y = 0,
+  cex.lab = 1.5
+) 
 ```
 
 ```{r fig.cap = "Supplement Figure N. Just like Main Text Figure 2, except using elevation subscale rather than the full elevation scale"}
