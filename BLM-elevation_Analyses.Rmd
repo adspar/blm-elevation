@@ -1,7 +1,10 @@
 ---
 title: "Main Text Analyses"
-author: "Reg"
+author: "TS, on behalf of Holbrook et al"
 date: "4/14/2022"
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -33,6 +36,9 @@ library(mediation)
 
 ```
 
+# Analysis
+
+This documents the analyses reported in the Main Text and/or Supplement to Holbrook et al "The Coalitional Contours of Moral Elevation: Evidence from the U.S. Black Lives Matter Protest and Counter-protest Movements."
 
 ### Correlation between conservatism and police funding
 
@@ -184,9 +190,8 @@ kbl(interaction_contrasts_2$contrasts, digits = c(2, 2, 2, 2, 2, 20), caption = 
   kable_styling()
 
 ```
+
 ### Interaction between political orientation and video condition on funding preferences
-
-
 
 ```{r}
 fit_1 <- lm(police_funding ~ conservativism_overall * condition, data = study1$df)
@@ -224,11 +229,7 @@ kbl(interaction_contrasts_2$contrasts, digits = c(2, 2, 2, 2, 2, 20), caption = 
 
 ```
 
-
-
 ### Interaction between elevation and video condition on funding preferences
-
-
 
 ```{r}
 fit_1 <- lm(police_funding ~ elevation * condition, data = study1$df)
@@ -265,9 +266,6 @@ kbl(interaction_contrasts_2$contrasts, digits = c(3, 3, 3, 3, 3, 20), caption = 
   kable_styling()
 
 ```
-
-
-
 
 ### Spearman and Pearson correlations betweeen conservatism and elevation by condition
 
@@ -473,7 +471,6 @@ pearson_parameters %>%
 
 ```
 
-
 ### main effect of condition on elevation
 
 Note that for the study 2 pairwise comparisons, p values are less than 2.62e-14--the package can't produce values any lower.
@@ -530,8 +527,6 @@ study2$df %>%
   kable(caption = "descriptive stats study 2") %>%
   kable_styling()
 ```
-
-
 
 ### main effect of condition on funding
 
@@ -613,7 +608,6 @@ study2$df %>%
   kable_styling()
 
 ```
-
 
 ### number of participants
 
@@ -854,6 +848,7 @@ summarise(
 
 
 ```
+
 ### SOM: pearson and spearman correlations
 
 #### Study 1
@@ -897,7 +892,6 @@ Hmisc::rcorr(as.matrix(correlation_frame), type = "pearson")
 Hmisc::rcorr(as.matrix(correlation_frame), type = "spearman")
 
 ```
-
 
 #### Study 2
 
