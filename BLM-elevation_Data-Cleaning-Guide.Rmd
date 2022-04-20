@@ -1,7 +1,7 @@
 ---
 title: 'Data cleaning guide for - The Coalitional Contours of Moral Elevation: Evidence from the U.S. Black Lives Matter Protest and Counter-protest Movements'
 author: "Holbrook et al"
-date: "26 March 2022"
+date: "20 April 2022"
 output:
   pdf_document: default
   word_document: default
@@ -65,8 +65,10 @@ The result is a list of useful objects for reporting:
 
 # Data Notes
 
-Pre-registration, a PDF copy of the Qualtrics survey, raw data, and data processing scripts are available on $$insert OSF link$$.
+Pre-registration, a PDF copy of the Qualtrics survey, raw data, and data processing scripts are available on the OSF page for this project.
 
-The variable names in the shared raw data file can be directly linked to corresponding survey items using the **"BLM-protest_studyN_variables.csv"** files, where studyN corresponds to the repository name for each study (see above: Study Labels). In those files, the "new name" column corresponds to the names in the raw data files, and the other two columns provide information about the Qualtrics variable name and full text of the corresponding survey item.
+The variable names in the shared raw data files can be directly linked to corresponding survey items using the **"BLM-protest_studyN_variables.csv"** files, where studyN corresponds to the repository name for each study (see above: Study Labels). In those files, the "new name" column corresponds to the names in the raw data files, and the other two columns provide information about the Qualtrics variable name and full text of the corresponding survey item.
 
 In our data wrangling process (see above: Data Preparation Scripts: General Workflow), we converted all variable names to snakecase, e.g., Idealism_Community_Dishonest_R --\> idealism_community_dishonest_r
+
+Processed data files used for reporting on this paper are available as .CSV, labelled with "BLM-elevation_studyN_processed-data" and using the study names as reported in the paper.
