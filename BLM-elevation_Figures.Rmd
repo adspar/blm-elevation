@@ -72,6 +72,46 @@ custom_scatterplot_all(x = "police_funding",
 
 ```
 
+```{r fig.cap = "Supplement Figure S1. Just like Main Text Figure 2, except using elevation subscales rather than the full elevation scale"}
+custom_scatterplot_all(x = "conservativism_overall",
+                       xlab = "conservatism",
+                       y = "folk_affect",
+                       ylab= "folk affect",
+                       group = "condition")
+
+```
+
+```{r fig.cap = "Supplement Figure S2. Just like Main Text Figure 2, except using elevation subscale rather than the full elevation scale"}
+custom_scatterplot_all(x = "conservativism_overall",
+                       xlab = "conservatism",
+                       y = "somatic",
+                       ylab= "somatic",
+                       group = "condition")
+
+```
+
+```{r fig.cap = "Supplement Figure S3. Just like Main Text Figure 2, except using elevation subscale rather than the full elevation scale"}
+custom_scatterplot_all(x = "conservativism_overall",
+                       xlab = "conservatism",
+                       y = "prosocial_motives",
+                       ylab= "prosocial motives",
+                       group = "condition")
+
+```
+
+```{r fig.cap="Supplement Figure S4. Like Main Text Figure 2, except using Idealism towards Police instead of Conservatism"}
+custom_scatterplot_all(x = "idealism_police",
+                       xlab = "idealism towards police",
+                       y = "elevation",
+                       ylab= "elevation",
+                       group = "condition")
+
+```
+
+```{r fig.cap="Supplement Figure S5. Like Main Text Figure 2, except using Idealism towards BLM instead of Conservatism. Note: study 2 data only"}
+custom_scatterplot(x="idealism_blm", xlab = "idealism towards BLM", y = "elevation", ylab = "elevation")
+```
+
 ```{r fig.cap="Supplement Fig S6 top panel for study 1"}
 pirateplot(
   formula = police_funding ~ condition,
@@ -108,44 +148,4 @@ pirateplot(
   theme = 1,
   cex.lab = 1.5
 ) 
-```
-
-```{r fig.cap = "Supplement Figure N. Just like Main Text Figure 2, except using elevation subscale rather than the full elevation scale"}
-custom_scatterplot_all(x = "conservativism_overall",
-                       xlab = "conservatism",
-                       y = "prosocial_motives",
-                       ylab= "prosocial motives",
-                       group = "condition")
-
-```
-
-```{r fig.cap = "Supplement Figure N. Just like Main Text Figure 2, except using elevation subscale rather than the full elevation scale"}
-custom_scatterplot_all(x = "conservativism_overall",
-                       xlab = "conservatism",
-                       y = "somatic",
-                       ylab= "somatic",
-                       group = "condition")
-
-```
-
-```{r fig.cap = "Supplement Figure N. Just like Main Text Figure 2, except using elevation subscales rather than the full elevation scale"}
-custom_scatterplot_all(x = "conservativism_overall",
-                       xlab = "conservatism",
-                       y = "folk_affect",
-                       ylab= "folk affect",
-                       group = "condition")
-
-```
-
-```{r fig.cap="Supplement Figure N. Like Main Text Figure 2, except using Idealism towards Police instead of Conservatism"}
-custom_scatterplot_all(x = "idealism_police",
-                       xlab = "idealism towards police",
-                       y = "elevation",
-                       ylab= "elevation",
-                       group = "condition")
-
-```
-
-```{r fig.cap="Supplement Figure N. Like Main Text Figure 2, except using Idealism towards BLM instead of Conservatism. Note: study 2 data only"}
-custom_scatterplot(x="idealism_blm", xlab = "idealism towards BLM", y = "elevation", ylab = "elevation")
 ```
