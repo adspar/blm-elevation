@@ -33,10 +33,10 @@ custom_scatterplot <- function(data = study2$df ,
   
   ydensity <- 
     ggplot( data,
-            aes(.data[[y]], fill=.data[[group]])
+            aes(.data[[y]], colour=.data[[group]])
     ) + 
     geom_density(alpha=.3) + 
-    scale_fill_manual(values = pal, name = "Condition") + 
+    scale_color_manual(values = pal, name = "Condition") + 
     #ylim(0, 1) +  #not sure if we need this
     coord_flip() + 
     theme_classic( base_size = text.size) +
@@ -45,10 +45,10 @@ custom_scatterplot <- function(data = study2$df ,
           axis.text.x = element_blank()
     )
   
-  xdensity <- ggplot(data, aes(.data[[x]], fill=.data[[group]])) + 
+  xdensity <- ggplot(data, aes(.data[[x]], colour=.data[[group]])) + 
     geom_density(alpha=.3) + 
     # ylim(0, 3) +
-    scale_fill_manual(values = pal) + 
+    scale_color_manual(values = pal) + 
     theme_classic( base_size = text.size) +
     theme(legend.position = "none",
           axis.title.x = element_blank(),
@@ -125,10 +125,10 @@ custom_scatterplot_all <- function(
   
   ydensity <- 
     ggplot( data,
-            aes(.data[[y]], fill=.data[[group]], linetype = study)
+            aes(.data[[y]], colour=.data[[group]], linetype = study)
     ) + 
     geom_density(alpha=.3) + 
-    scale_fill_manual(values = pal, name = "Condition") + 
+    scale_color_manual(values = pal, name = "Condition") + 
     scale_linetype_manual(values=c("longdash","dotted",  "solid"), name = "Study") +
     #ylim(0, 1) +  #not sure if we need this
     coord_flip() + 
@@ -138,11 +138,11 @@ custom_scatterplot_all <- function(
           axis.text.x = element_blank()
     )
   
-  xdensity <- ggplot(data, aes(.data[[x]], fill=.data[[group]], linetype = study)) + 
+  xdensity <- ggplot(data, aes(.data[[x]], colour=.data[[group]], linetype = study)) + 
     geom_density(alpha=.3) + 
     scale_linetype_manual(values=c("longdash","dotted",  "solid")) +
     # ylim(0, 3) +
-    scale_fill_manual(values = pal) + 
+    scale_color_manual(values = pal) + 
     theme_classic( base_size = text.size ) +
     theme(legend.position = "none",
           axis.title.x = element_blank(),
